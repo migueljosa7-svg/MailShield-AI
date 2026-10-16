@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MailShield AI - Simulador y Pruebas de Fuego (Gmail Mock)</title>
+  <link rel="stylesheet" href="/dist/contentStyle.css">
+  <link rel="stylesheet" href="./contentStyle.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f0f4f9;
+      color: #1f1f1f;
+    }
+    .gmail-header {
+      background: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e0e0e0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .gmail-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #ea4335;
+    }
+    .gmail-layout {
+      display: flex;
+      max-width: 1240px;
+      margin: 24px auto;
+      gap: 24px;
+      padding: 0 16px;
+    }
+    .gmail-sidebar {
+      width: 290px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      height: fit-content;
+    }
+    .gmail-email-thread {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .test-case-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      background: #f8fafc;
+      font-size: 13px;
+      color: #334155;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+    .test-case-btn:hover {
+      background: #e2e8f0;
+    }
+    .test-case-btn.active {
+      border-color: #0284c7;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 700;
+    }
+    .badge-case {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="gmail-header">
+    <div class="gmail-logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="#EA4335"/></svg>
+      <span>Gmail Simulation Suite</span>
+    </div>
+    <div style="font-size: 14px; font-weight: 600; color: #475569;">
+      🛡️ MailShield AI: Pruebas de Fuego & Anti-Falsos Positivos
+    </div>
+  </div>
+
+  <div class="gmail-layout">
+    <!-- Barra Lateral de Selección de Pruebas de Fuego -->
+    <div class="gmail-sidebar">
+      <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;">
+        🔥 Pruebas de Fuego y Falsos Positivos:
+      </div>
+
+      <!-- Caso 1 -->
+      <button class="test-case-btn active" id="btn-caso1">
+        <span class="badge-case" style="background: #fee2e2; color: #b91c1c;">Caso 1: Phishing Banco</span>
+        <div style="font-size: 12px; font-weight: 700;">🚨 Santander IP / 24h</div>
+        <div style="font-size: 11px; color: #64748b;">Tarjeta Roja (100% Peligro)</div>
+      </button>
+
+      <!-- Caso 2 -->
+      <button class="test-case-btn" id="btn-caso2">
+        <span class="badge-case" style="background: #fef3c7; color: #b45309;">Caso 2: Engaño de Botón</span>
+        <div style="font-size: 12px; font-weight: 700;">⚠️ Correos a trampa .xyz</div>
+        <div style="font-size: 11px; color: #64748b;">Divergencia de botón</div>
+      </button>
+
+      <!-- Caso 3: Google Classroom (Anti Falso Positivo) -->
+      <button class="test-case-btn" id="btn-caso3">
+        <span class="badge-case" style="background: #dbeafe; color: #1d4ed8;">Caso 3: Google Classroom</span>
+        <div style="font-size: 12px; font-weight: 700;">🟢 Aviso de Entrega 24h</div>
+        <div style="font-size: 11px; color: #166534; font-weight: 600;">Falso Positivo Evitado (&le; 15%)</div>
+      </button>
+
+      <!-- Caso 4: RED ZAC Zaragoza (Anti Falso Positivo) -->
+      <button class="test-case-btn" id="btn-caso4">
+        <span class="badge-case" style="background: #dcfce7; color: #15803d;">Caso 4: RED ZAC Zaragoza</span>
+        <div style="font-size: 12px; font-weight: 700;">🟢 Notificación zaragoza.es</div>
+        <div style="font-size: 11px; color: #166534; font-weight: 600;">Plataforma Oficial (&le; 15%)</div>
+      </button>
+
+      <!-- Caso 5: Google Accounts -->
+      <button class="test-case-btn" id="btn-caso5">
+        <span class="badge-case" style="background: #f1f5f9; color: #334155;">Caso 5: Google Accounts</span>
+        <div style="font-size: 12px; font-weight: 700;">✅ Inicio de Sesión Oficial</div>
+        <div style="font-size: 11px; color: #64748b;">Totalmente Seguro (0%)</div>
+      </button>
+
+      <div style="margin-top: 16px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 11px; line-height: 1.4; color: #475569;">
+        <strong>Regla Anti Falso Positivo:</strong><br>
+        Plataformas oficiales (Google Classroom, RED ZAC zaragoza.es, GitHub) con enlaces de seguimiento interno reciben un tope de <strong>riesgo máximo del 15% (Verde/Seguro)</strong>.
+      </div>
+
+      <button id="btn-reinject" style="margin-top: 12px; width: 100%; min-height: 44px; padding: 10px; background: #0284c7; color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer;">
+        🛡️ Reinyectar Semáforo
+      </button>
+    </div>
+
+    <!-- Contenedor del Correo (Estructura DOM idéntica a Gmail) -->
+    <div class="gmail-email-thread">
+      <div class="adn ads" id="current-email-container">
+        <!-- Asunto (.ha, h2.hP) -->
+        <div class="ha">
+          <h2 class="hP" id="email-subject" style="font-size: 22px; font-weight: 700; margin: 0 0 16px 0; color: #0f172a;">
+            🚨 URGENTE: Su cuenta de Banco Santander ha sido bloqueada. Verifique en 24 horas
+          </h2>
+        </div>
+
+        <!-- Encabezado Remitente (.gE.iv.gt) -->
+        <div class="gE iv gt" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div id="sender-avatar" style="width: 44px; height: 44px; border-radius: 50%; background: #ec0000; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px;">
+              S
+            </div>
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #1e293b;">
+                <span class="zF" id="email-sender-name">Banco Santander España</span>
+                <span class="gD" id="email-sender-email" email="alertas@santander-verificacion.xyz" style="font-weight: 500; color: #64748b; font-size: 12px; margin-left: 6px;">
+                  &lt;alertas@santander-verificacion.xyz&gt;
+                </span>
+              </div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 2px;" id="email-reply-to">
+                reply-to: recolector-claves@hacker-server.org
+              </div>
+            </div>
+          </div>
+          <div style="font-size: 12px; color: #64748b; font-weight: 500;">
+            Hoy, 11:20 (Hace 2 minutos)
+          </div>
+        </div>
+
+        <!-- Cuerpo del Correo (.a3s.aiL) -->
+        <div class="a3s aiL" id="email-body" style="font-size: 15px; line-height: 1.7; color: #334155;">
+          <p>Estimado cliente del Banco Santander,</p>
+          <p>Hemos detectado varios <strong>intentos de acceso sospechosos</strong> a sus tarjetas bancarias desde una dirección IP no autorizada. Por motivos de seguridad, hemos <strong>suspendido preventivamente su banca digital</strong>.</p>
+          <p style="background: #fff1f2; padding: 12px; border-left: 4px solid #f43f5e; border-radius: 6px; font-weight: 600; color: #9f1239;">
+            Tiene un plazo estricto de 24 horas para verificar su identidad o sus cuentas quedarán bloqueadas definitivamente.
+          </p>
+          
+          <div style="margin: 24px 0;">
+            <a href="http://192.168.1.100/login-santander" role="button" class="button" style="display: inline-block; background: #ec0000; color: white; padding: 14px 28px; text-decoration: none; border-radius: 28px; font-weight: 800; font-size: 14px; box-shadow: 0 4px 12px rgba(236,0,0,0.3);">
+              Desbloquear Mi Dinero Ahora (Banca Online)
+            </a>
+          </div>
+
+          <p style="font-size: 12px; color: #64748b;">
+            Enlace de respaldo seguro alternativo: 
+            <a href="https://bit.ly/desbloqueo-tarjeta" style="color: #ec0000; font-weight: 600;">https://bancosantander.es/acceso-seguro</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carga limpia de scripts externos para cumplimiento estricto con CSP -->
+  <script src="/dist/contentScript.js"></script>
+  <script src="./demo.js"></script>
+</body>
+</html>
